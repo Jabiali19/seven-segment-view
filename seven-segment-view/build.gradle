@@ -1,8 +1,12 @@
 apply plugin: 'com.android.library'
 
+repositories {
+    maven { url 'http://repo1.maven.org/maven2' }
+
+}
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         minSdkVersion 16
@@ -57,37 +61,37 @@ ext {
 }
 
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'com.github.dcendents.android-maven'
-
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-                groupId publishedGroupId
-                artifactId artifact
-
-                // Add your description here
-                name libraryName
-                description libraryDescription
-
-                developers {
-                    developer {
-                        id developerId
-                        name developerName
-                        email developerEmail
-                    }
-                }
-                scm {
-                    //connection gitUrl
-                    //developerConnection gitUrl
-                    //url siteUrl
-                }
-            }
-        }
-    }
-}
+//apply plugin: 'com.github.dcendents.android-maven'
+//
+//install {
+//    repositories.mavenInstaller {
+//        // This generates POM.xml with proper parameters
+//        pom {
+//            project {
+//                packaging 'aar'
+//                groupId publishedGroupId
+//                artifactId artifact
+//
+//                // Add your description here
+//                name libraryName
+//                description libraryDescription
+//
+//                developers {
+//                    developer {
+//                        id developerId
+//                        name developerName
+//                        email developerEmail
+//                    }
+//                }
+//                scm {
+//                    //connection gitUrl
+//                    //developerConnection gitUrl
+//                    //url siteUrl
+//                }
+//            }
+//        }
+//    }
+//}
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -95,19 +99,23 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 group = ext.publishedGroupId
 version = ext.libraryVersion
 
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
+//bintray {
+//    user = properties.getProperty("bintray.user")
+//    key = properties.getProperty("bintray.apikey")
+//
+//    configurations = ['archives']
+//    pkg {
+//        repo = bintrayRepo
+//        name = libraryName
+//        desc = libraryDescription
+//        publish = true
+//        publicDownloadNumbers = true
+//        licenses = ['WTFPL']
+//    }
+//}
 
-    configurations = ['archives']
-    pkg {
-        repo = bintrayRepo
-        name = libraryName
-        desc = libraryDescription
-        publish = true
-        publicDownloadNumbers = true
-        licenses = ['WTFPL']
-    }
+
+
+dependencies {
+    testCompile 'junit:junit:4.12'
 }
-
-
