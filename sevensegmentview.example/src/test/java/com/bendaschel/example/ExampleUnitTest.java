@@ -1,4 +1,4 @@
-package com.bendaschel.sevensegmentviewexample;
+package com.bendaschel.example;
 
 import org.junit.Test;
 

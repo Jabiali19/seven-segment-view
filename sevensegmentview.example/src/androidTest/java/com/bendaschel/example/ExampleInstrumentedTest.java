@@ -1,4 +1,4 @@
-package com.bendaschel.sevensegmentviewexample;
+package com.bendaschel.example;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

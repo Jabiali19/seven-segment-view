@@ -13,6 +13,9 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -22,45 +25,60 @@ android {
     }
 }
 
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'junit:junit:4.12'
+
+    // Required for instrumented tests
+    androidTestCompile 'com.android.support:support-annotations:25.3.1'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+
 }
 
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
-ext {
-    // Where you will see your artifact in Bintray's web interface
-    // The "bintrayName" should match the name of the Bintray repro.
-    bintrayRepo = 'maven'
-    libraryName = 'SevenSegmentView'
-
-    // Maven metadata
-    publishedGroupId = 'com.bendaschel'
-    artifact = 'seven-segment-view'
-
-    libraryDescription = 'A simple seven segment display view for Android projects'
-    libraryVersion = '1.0'
-
-    developerId = 'supercoffee'
-    developerName = 'Benjamin Daschel'
-    developerEmail = 'coffeemaxed@gmail.com'
-}
-
-apply plugin: 'com.jfrog.bintray'
+/*
+    Packaging shit
+ */
+//
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+//
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//}
+//
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//
+//artifacts {
+//    archives javadocJar
+//    archives sourcesJar
+//}
+//
+//ext {
+//    // Where you will see your artifact in Bintray's web interface
+//    // The "bintrayName" should match the name of the Bintray repro.
+//    bintrayRepo = 'maven'
+//    libraryName = 'SevenSegmentView'
+//
+//    // Maven metadata
+//    publishedGroupId = 'com.bendaschel'
+//    artifact = 'seven-segment-view'
+//
+//    libraryDescription = 'A simple seven segment display view for Android projects'
+//    libraryVersion = '1.0'
+//
+//    developerId = 'supercoffee'
+//    developerName = 'Benjamin Daschel'
+//    developerEmail = 'coffeemaxed@gmail.com'
+//}
+//
+//apply plugin: 'com.jfrog.bintray'
 //apply plugin: 'com.github.dcendents.android-maven'
 //
 //install {
@@ -92,12 +110,12 @@ apply plugin: 'com.jfrog.bintray'
 //        }
 //    }
 //}
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-group = ext.publishedGroupId
-version = ext.libraryVersion
+//
+//Properties properties = new Properties()
+//properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//
+//group = ext.publishedGroupId
+//version = ext.libraryVersion
 
 //bintray {
 //    user = properties.getProperty("bintray.user")
@@ -113,9 +131,3 @@ version = ext.libraryVersion
 //        licenses = ['WTFPL']
 //    }
 //}
-
-
-
-dependencies {
-    testCompile 'junit:junit:4.12'
-}

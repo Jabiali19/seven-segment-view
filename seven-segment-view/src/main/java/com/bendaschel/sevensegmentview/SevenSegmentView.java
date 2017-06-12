@@ -14,11 +14,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class SevenSegmentView extends View {
 
-    private static final Path BASE_PATH = makePathFromPoints(Arrays.asList(
+    private static final Path BASE_PATH = PathUtils.makePathFromPoints(Arrays.asList(
             new Point(4, 1),
             new Point(5, 0),
             new Point(4, -1),
@@ -168,19 +167,6 @@ public class SevenSegmentView extends View {
             outerBounds.union(segmentBounds);
         }
         return outerBounds;
-    }
-
-    private static Path makePathFromPoints(List<Point> points){
-        Path path = new Path();
-        Point firstPoint = points.get(0);
-        List<Point> middlePoints = points.subList(1, points.size());
-        path.moveTo(firstPoint.x, firstPoint.y);
-
-        for(Point p: middlePoints){
-            path.lineTo(p.x, p.y);
-        }
-        path.close();
-        return path;
     }
 
     @Override
