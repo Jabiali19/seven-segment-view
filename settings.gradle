@@ -1,1 +1,1 @@
-include ':seven-segment-view'
+include ':seven-segment-view', ':sevensegmentview.example'

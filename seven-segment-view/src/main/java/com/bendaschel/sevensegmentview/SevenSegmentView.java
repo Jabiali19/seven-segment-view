@@ -1,6 +1,7 @@
 package com.bendaschel.sevensegmentview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -14,11 +15,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class SevenSegmentView extends View {
 
-    private static final Path BASE_PATH = makePathFromPoints(Arrays.asList(
+    private static final Path BASE_PATH = PathUtils.makePathFromPoints(Arrays.asList(
             new Point(4, 1),
             new Point(5, 0),
             new Point(4, -1),
@@ -71,8 +71,8 @@ public class SevenSegmentView extends View {
     }
 
     private static final RectF SEGMENT_BOUNDS = calculateAllSegmentBounds();
-    private static final int COLOR_ON = Color.RED;
-    private static final int COLOR_OFF = Color.argb(50, Color.red(Color.RED), 0, 0);
+    private int onColor;
+    private int offColor;
     private static final boolean ON = true;
     private static final boolean OFF = false;
 
@@ -83,21 +83,21 @@ public class SevenSegmentView extends View {
     private boolean[] mActiveSegments;
 
     public SevenSegmentView(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public SevenSegmentView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+        this(context, attrs, 0);
     }
 
     public SevenSegmentView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
-    }
 
-    private void init(){
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.SevenSegmentView, 0, 0);
+
+        offColor =  a.getColor(R.styleable.SevenSegmentView_offColor, Color.argb(50, Color.red(Color.RED), 0, 0));
+        onColor = a.getColor(R.styleable.SevenSegmentView_onColor, Color.RED);
+
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCurrentTransformation = new Matrix();
         mTemporaryPath = new Path();
@@ -146,7 +146,7 @@ public class SevenSegmentView extends View {
         for(SEGMENTS segment: SEGMENTS.values()) {
             segment.path.transform(mCurrentTransformation, mTemporaryPath);
             int position = segment.ordinal();
-            mPaint.setColor(mActiveSegments[position] ? COLOR_ON : COLOR_OFF);
+            mPaint.setColor(mActiveSegments[position] ? onColor : offColor);
             canvas.drawPath(mTemporaryPath, mPaint);
             mTemporaryPath.reset();
         }
@@ -170,19 +170,6 @@ public class SevenSegmentView extends View {
         return outerBounds;
     }
 
-    private static Path makePathFromPoints(List<Point> points){
-        Path path = new Path();
-        Point firstPoint = points.get(0);
-        List<Point> middlePoints = points.subList(1, points.size());
-        path.moveTo(firstPoint.x, firstPoint.y);
-
-        for(Point p: middlePoints){
-            path.lineTo(p.x, p.y);
-        }
-        path.close();
-        return path;
-    }
-
     @Override
     protected Parcelable onSaveInstanceState() {
         // https://stackoverflow.com/questions/3542333/how-to-prevent-custom-views-from-losing-state-across-screen-orientation-changes
@@ -201,5 +188,23 @@ public class SevenSegmentView extends View {
             state = bundle.getParcelable(KEY_SUPER_STATE);
         }
         super.onRestoreInstanceState(state);
+    }
+
+    public int getOnColor() {
+        return onColor;
+    }
+
+    public void setOnColor(int onColor) {
+        this.onColor = onColor;
+        invalidate();
+    }
+
+    public int getOffColor() {
+        return offColor;
+    }
+
+    public void setOffColor(int offColor) {
+        this.offColor = offColor;
+        invalidate();
     }
 }

@@ -1,14 +1,23 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
+repositories {
+    maven { url 'http://repo1.maven.org/maven2' }
+    mavenCentral()
+
+}
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -18,96 +27,110 @@ android {
     }
 }
 
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'junit:junit:4.12'
+
+    // Required for instrumented tests
+    androidTestCompile 'com.android.support:support-annotations:25.3.1'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
 }
 
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
+/*
+    Packaging shit
+ */
+//
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+//
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//}
+//
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//
+//artifacts {
+//    archives javadocJar
+//    archives sourcesJar
+//}
+//
+//ext {
+//    // Where you will see your artifact in Bintray's web interface
+//    // The "bintrayName" should match the name of the Bintray repro.
+//    bintrayRepo = 'maven'
+//    libraryName = 'SevenSegmentView'
+//
+//    // Maven metadata
+//    publishedGroupId = 'com.bendaschel'
+//    artifact = 'seven-segment-view'
+//
+//    libraryDescription = 'A simple seven segment display view for Android projects'
+//    libraryVersion = '1.0'
+//
+//    developerId = 'supercoffee'
+//    developerName = 'Benjamin Daschel'
+//    developerEmail = 'coffeemaxed@gmail.com'
+//}
+//
+//apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'com.github.dcendents.android-maven'
+//
+//install {
+//    repositories.mavenInstaller {
+//        // This generates POM.xml with proper parameters
+//        pom {
+//            project {
+//                packaging 'aar'
+//                groupId publishedGroupId
+//                artifactId artifact
+//
+//                // Add your description here
+//                name libraryName
+//                description libraryDescription
+//
+//                developers {
+//                    developer {
+//                        id developerId
+//                        name developerName
+//                        email developerEmail
+//                    }
+//                }
+//                scm {
+//                    //connection gitUrl
+//                    //developerConnection gitUrl
+//                    //url siteUrl
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//Properties properties = new Properties()
+//properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//
+//group = ext.publishedGroupId
+//version = ext.libraryVersion
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
-ext {
-    // Where you will see your artifact in Bintray's web interface
-    // The "bintrayName" should match the name of the Bintray repro.
-    bintrayRepo = 'maven'
-    libraryName = 'SevenSegmentView'
-
-    // Maven metadata
-    publishedGroupId = 'com.bendaschel'
-    artifact = 'seven-segment-view'
-
-    libraryDescription = 'A simple seven segment display view for Android projects'
-    libraryVersion = '1.0'
-
-    developerId = 'supercoffee'
-    developerName = 'Benjamin Daschel'
-    developerEmail = 'coffeemaxed@gmail.com'
-}
-
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'com.github.dcendents.android-maven'
-
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-                groupId publishedGroupId
-                artifactId artifact
-
-                // Add your description here
-                name libraryName
-                description libraryDescription
-
-                developers {
-                    developer {
-                        id developerId
-                        name developerName
-                        email developerEmail
-                    }
-                }
-                scm {
-                    //connection gitUrl
-                    //developerConnection gitUrl
-                    //url siteUrl
-                }
-            }
-        }
-    }
-}
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-group = ext.publishedGroupId
-version = ext.libraryVersion
-
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-
-    configurations = ['archives']
-    pkg {
-        repo = bintrayRepo
-        name = libraryName
-        desc = libraryDescription
-        publish = true
-        publicDownloadNumbers = true
-        licenses = ['WTFPL']
-    }
-}
-
-
+//bintray {
+//    user = properties.getProperty("bintray.user")
+//    key = properties.getProperty("bintray.apikey")
+//
+//    configurations = ['archives']
+//    pkg {
+//        repo = bintrayRepo
+//        name = libraryName
+//        desc = libraryDescription
+//        publish = true
+//        publicDownloadNumbers = true
+//        licenses = ['WTFPL']
+//    }
+//}
