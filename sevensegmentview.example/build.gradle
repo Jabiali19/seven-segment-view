@@ -1,10 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 repositories {
     maven {
         url 'https://maven.google.com'
         maven { url 'http://repo1.maven.org/maven2' }
     }
+    mavenCentral()
 }
 
 android {
@@ -41,4 +43,5 @@ dependencies {
     // https://mvnrepository.com/artifact/com.squareup/javawriter
     compile 'com.squareup:javawriter:2.1.1'
     compile project(':seven-segment-view')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
