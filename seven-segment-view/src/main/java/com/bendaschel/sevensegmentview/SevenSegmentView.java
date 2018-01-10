@@ -189,4 +189,22 @@ public class SevenSegmentView extends View {
         }
         super.onRestoreInstanceState(state);
     }
+
+    public int getOnColor() {
+        return onColor;
+    }
+
+    public void setOnColor(int onColor) {
+        this.onColor = onColor;
+        invalidate();
+    }
+
+    public int getOffColor() {
+        return offColor;
+    }
+
+    public void setOffColor(int offColor) {
+        this.offColor = offColor;
+        invalidate();
+    }
 }
